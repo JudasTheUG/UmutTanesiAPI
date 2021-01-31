@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UmutTanesiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ChatMessage">
+    <Key>
+      <PropertyRef Name="messageId" />
+    </Key>
+    <Property Name="messageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="senderId" Type="int" Nullable="false" />
+    <Property Name="reciverId" Type="int" Nullable="false" />
+    <Property Name="currentMessage" Type="nvarchar" MaxLength="255" />
+    <Property Name="messageTime" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="HelpStatus">
+    <Key>
+      <PropertyRef Name="helpId" />
+    </Key>
+    <Property Name="helpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="helpStatus" Type="nvarchar" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Requests">
+    <Key>
+      <PropertyRef Name="requestId" />
+    </Key>
+    <Property Name="requestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="reqTypeId" Type="int" Nullable="false" />
+    <Property Name="helpId" Type="int" Nullable="false" />
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="personCount" Type="int" />
+    <Property Name="moneyStatus" Type="bit" />
+    <Property Name="ibanStatus" Type="bit" />
+    <Property Name="mobileStatus" Type="bit" />
+    <Property Name="beginDate" Type="date" />
+    <Property Name="endDate" Type="date" />
+  </EntityType>
+  <EntityType Name="RequestType">
+    <Key>
+      <PropertyRef Name="reqTypeId" />
+    </Key>
+    <Property Name="reqTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="reqType" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userName" Type="nvarchar" MaxLength="30" />
+    <Property Name="userSurname" Type="nvarchar" MaxLength="30" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="iban" Type="nvarchar" MaxLength="35" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="13" />
+    <Property Name="birthdate" Type="date" />
+    <Property Name="userPassword" Type="nvarchar" MaxLength="8" />
+  </EntityType>
+  <Association Name="FK_ChatMessage_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ChatMessage" Type="Self.ChatMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="ChatMessage">
+        <PropertyRef Name="senderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChatMessage_Users1">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ChatMessage" Type="Self.ChatMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="ChatMessage">
+        <PropertyRef Name="reciverId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_HelpStatus">
+    <End Role="HelpStatus" Type="Self.HelpStatus" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HelpStatus">
+        <PropertyRef Name="helpId" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="helpId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_RequestType">
+    <End Role="RequestType" Type="Self.RequestType" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequestType">
+        <PropertyRef Name="reqTypeId" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="reqTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_chatters" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_deleteChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sender" Type="int" Mode="In" />
+    <Parameter Name="reciver" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_getChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sender" Type="int" Mode="In" />
+    <Parameter Name="reciver" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_match" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="reqType" Type="int" Mode="In" />
+    <Parameter Name="help" Type="int" Mode="In" />
+    <Parameter Name="count" Type="int" Mode="In" />
+    <Parameter Name="start" Type="date" Mode="In" />
+    <Parameter Name="finish" Type="date" Mode="In" />
+  </Function>
+  <Function Name="sp_message" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sender" Type="int" Mode="In" />
+    <Parameter Name="reciver" Type="int" Mode="In" />
+    <Parameter Name="message" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="UmutTanesiModelStoreContainer">
+    <EntitySet Name="ChatMessage" EntityType="Self.ChatMessage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HelpStatus" EntityType="Self.HelpStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RequestType" EntityType="Self.RequestType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ChatMessage_Users" Association="Self.FK_ChatMessage_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ChatMessage" EntitySet="ChatMessage" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChatMessage_Users1" Association="Self.FK_ChatMessage_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ChatMessage" EntitySet="ChatMessage" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_HelpStatus" Association="Self.FK_Requests_HelpStatus">
+      <End Role="HelpStatus" EntitySet="HelpStatus" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_RequestType" Association="Self.FK_Requests_RequestType">
+      <End Role="RequestType" EntitySet="RequestType" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_Users" Association="Self.FK_Requests_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

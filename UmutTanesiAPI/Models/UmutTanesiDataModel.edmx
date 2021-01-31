@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UmutTanesiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ChatMessage">
+          <Key>
+            <PropertyRef Name="messageId" />
+          </Key>
+          <Property Name="messageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="senderId" Type="int" Nullable="false" />
+          <Property Name="reciverId" Type="int" Nullable="false" />
+          <Property Name="currentMessage" Type="nvarchar" MaxLength="255" />
+          <Property Name="messageTime" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="HelpStatus">
+          <Key>
+            <PropertyRef Name="helpId" />
+          </Key>
+          <Property Name="helpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="helpStatus" Type="nvarchar" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="requestId" />
+          </Key>
+          <Property Name="requestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reqTypeId" Type="int" Nullable="false" />
+          <Property Name="helpId" Type="int" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="personCount" Type="int" />
+          <Property Name="moneyStatus" Type="bit" />
+          <Property Name="ibanStatus" Type="bit" />
+          <Property Name="mobileStatus" Type="bit" />
+          <Property Name="beginDate" Type="date" />
+          <Property Name="endDate" Type="date" />
+        </EntityType>
+        <EntityType Name="RequestType">
+          <Key>
+            <PropertyRef Name="reqTypeId" />
+          </Key>
+          <Property Name="reqTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reqType" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="30" />
+          <Property Name="userSurname" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="iban" Type="nvarchar" MaxLength="35" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="13" />
+          <Property Name="birthdate" Type="date" />
+          <Property Name="userPassword" Type="nvarchar" MaxLength="8" />
+        </EntityType>
+        <Association Name="FK_ChatMessage_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ChatMessage" Type="Self.ChatMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="ChatMessage">
+              <PropertyRef Name="senderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatMessage_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ChatMessage" Type="Self.ChatMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="ChatMessage">
+              <PropertyRef Name="reciverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_HelpStatus">
+          <End Role="HelpStatus" Type="Self.HelpStatus" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HelpStatus">
+              <PropertyRef Name="helpId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="helpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_RequestType">
+          <End Role="RequestType" Type="Self.RequestType" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestType">
+              <PropertyRef Name="reqTypeId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="reqTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_chatters" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_deleteChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sender" Type="int" Mode="In" />
+          <Parameter Name="reciver" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_getChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sender" Type="int" Mode="In" />
+          <Parameter Name="reciver" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_match" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reqType" Type="int" Mode="In" />
+          <Parameter Name="help" Type="int" Mode="In" />
+          <Parameter Name="count" Type="int" Mode="In" />
+          <Parameter Name="start" Type="date" Mode="In" />
+          <Parameter Name="finish" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_message" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="sender" Type="int" Mode="In" />
+          <Parameter Name="reciver" Type="int" Mode="In" />
+          <Parameter Name="message" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="UmutTanesiModelStoreContainer">
+          <EntitySet Name="ChatMessage" EntityType="Self.ChatMessage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HelpStatus" EntityType="Self.HelpStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestType" EntityType="Self.RequestType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ChatMessage_Users" Association="Self.FK_ChatMessage_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ChatMessage" EntitySet="ChatMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatMessage_Users1" Association="Self.FK_ChatMessage_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ChatMessage" EntitySet="ChatMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_HelpStatus" Association="Self.FK_Requests_HelpStatus">
+            <End Role="HelpStatus" EntitySet="HelpStatus" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_RequestType" Association="Self.FK_Requests_RequestType">
+            <End Role="RequestType" EntitySet="RequestType" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Users" Association="Self.FK_Requests_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UmutTanesiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ChatMessage">
+          <Key>
+            <PropertyRef Name="messageId" />
+          </Key>
+          <Property Name="messageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="senderId" Type="Int32" Nullable="false" />
+          <Property Name="messageTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Computed" Precision="3" />
+          <Property Name="currentMessage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="reciverId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="UmutTanesiModel.FK_ChatMessage_Users" FromRole="ChatMessage" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="UmutTanesiModel.FK_ChatMessage_Users1" FromRole="ChatMessage" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="HelpStatus">
+          <Key>
+            <PropertyRef Name="helpId" />
+          </Key>
+          <Property Name="helpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="helpStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_HelpStatus" FromRole="HelpStatus" ToRole="Requests" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="requestId" />
+          </Key>
+          <Property Name="requestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reqTypeId" Type="Int32" Nullable="false" />
+          <Property Name="helpId" Type="Int32" Nullable="false" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="personCount" Type="Int32" />
+          <Property Name="moneyStatus" Type="Boolean" />
+          <Property Name="ibanStatus" Type="Boolean" />
+          <Property Name="mobileStatus" Type="Boolean" />
+          <Property Name="beginDate" Type="DateTime" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="HelpStatu" Relationship="Self.FK_Requests_HelpStatus" FromRole="Requests" ToRole="HelpStatus" />
+          <NavigationProperty Name="RequestType" Relationship="Self.FK_Requests_RequestType" FromRole="Requests" ToRole="RequestType" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Requests_Users" FromRole="Requests" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="RequestType">
+          <Key>
+            <PropertyRef Name="reqTypeId" />
+          </Key>
+          <Property Name="reqTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reqType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_RequestType" FromRole="RequestType" ToRole="Requests" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="userSurname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="iban" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="birthdate" Type="DateTime" Precision="0" />
+          <Property Name="userPassword" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_Users" FromRole="Users" ToRole="Requests" />
+          <NavigationProperty Name="ChatMessages" Relationship="UmutTanesiModel.FK_ChatMessage_Users" FromRole="Users" ToRole="ChatMessage" />
+          <NavigationProperty Name="ChatMessages1" Relationship="UmutTanesiModel.FK_ChatMessage_Users1" FromRole="Users" ToRole="ChatMessage" />
+        </EntityType>
+        <Association Name="FK_Requests_HelpStatus">
+          <End Role="HelpStatus" Type="UmutTanesiModel.HelpStatus" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HelpStatus">
+              <PropertyRef Name="helpId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="helpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_RequestType">
+          <End Role="RequestType" Type="Self.RequestType" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestType">
+              <PropertyRef Name="reqTypeId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="reqTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Users">
+          <End Role="Users" Type="UmutTanesiModel.Users" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UmutTanesiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ChatMessages" EntityType="Self.ChatMessage" />
+          <EntitySet Name="HelpStatus1" EntityType="UmutTanesiModel.HelpStatus" />
+          <EntitySet Name="Requests" EntityType="Self.Request" />
+          <EntitySet Name="RequestTypes" EntityType="Self.RequestType" />
+          <EntitySet Name="Users1" EntityType="UmutTanesiModel.Users" />
+          <AssociationSet Name="FK_Requests_HelpStatus" Association="Self.FK_Requests_HelpStatus">
+            <End Role="HelpStatus" EntitySet="HelpStatus1" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_RequestType" Association="Self.FK_Requests_RequestType">
+            <End Role="RequestType" EntitySet="RequestTypes" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Users" Association="Self.FK_Requests_Users">
+            <End Role="Users" EntitySet="Users1" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <FunctionImport Name="sp_match" ReturnType="Collection(UmutTanesiModel.sp_match_Result)">
+            <Parameter Name="reqType" Mode="In" Type="Int32" />
+            <Parameter Name="help" Mode="In" Type="Int32" />
+            <Parameter Name="count" Mode="In" Type="Int32" />
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="finish" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_message">
+            <Parameter Name="sender" Mode="In" Type="Int32" />
+            <Parameter Name="reciver" Mode="In" Type="Int32" />
+            <Parameter Name="message" Mode="In" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="FK_ChatMessage_Users" Association="UmutTanesiModel.FK_ChatMessage_Users">
+            <End Role="Users" EntitySet="Users1" />
+            <End Role="ChatMessage" EntitySet="ChatMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatMessage_Users1" Association="UmutTanesiModel.FK_ChatMessage_Users1">
+            <End Role="Users" EntitySet="Users1" />
+            <End Role="ChatMessage" EntitySet="ChatMessages" />
+          </AssociationSet>
+          <FunctionImport Name="sp_chatters" ReturnType="Collection(Int32)">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_getChat" ReturnType="Collection(UmutTanesiModel.sp_getChat_Result)">
+            <Parameter Name="sender" Mode="In" Type="Int32" />
+            <Parameter Name="reciver" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_deleteChat">
+            <Parameter Name="sender" Mode="In" Type="Int32" />
+            <Parameter Name="reciver" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_match_Result">
+          <Property Type="Int32" Name="requestId" Nullable="false" />
+          <Property Type="Int32" Name="reqTypeId" Nullable="false" />
+          <Property Type="Int32" Name="helpId" Nullable="false" />
+          <Property Type="Int32" Name="userId" Nullable="false" />
+          <Property Type="Int32" Name="personCount" Nullable="true" />
+          <Property Type="Boolean" Name="moneyStatus" Nullable="true" />
+          <Property Type="Boolean" Name="ibanStatus" Nullable="true" />
+          <Property Type="Boolean" Name="mobileStatus" Nullable="true" />
+          <Property Type="Decimal" Name="latitude" Nullable="true" Precision="10" Scale="8" />
+          <Property Type="Decimal" Name="longitude" Nullable="true" Precision="11" Scale="8" />
+          <Property Type="DateTime" Name="beginDate" Nullable="true" />
+          <Property Type="DateTime" Name="endDate" Nullable="true" />
+        </ComplexType>
+        <Association Name="FK_ChatMessage_Users">
+          <End Type="UmutTanesiModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="UmutTanesiModel.ChatMessage" Role="ChatMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="ChatMessage">
+              <PropertyRef Name="senderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatMessage_Users1">
+          <End Type="UmutTanesiModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="UmutTanesiModel.ChatMessage" Role="ChatMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="ChatMessage">
+              <PropertyRef Name="reciverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_getChat_Result">
+          <Property Type="Int32" Name="messageId" Nullable="false" />
+          <Property Type="Int32" Name="senderId" Nullable="false" />
+          <Property Type="Int32" Name="reciverId" Nullable="false" />
+          <Property Type="String" Name="currentMessage" Nullable="true" MaxLength="255" />
+          <Property Type="DateTime" Name="messageTime" Nullable="false" Precision="23" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UmutTanesiModelStoreContainer" CdmEntityContainer="UmutTanesiEntities">
+          <EntitySetMapping Name="ChatMessages">
+            <EntityTypeMapping TypeName="UmutTanesiModel.ChatMessage">
+              <MappingFragment StoreEntitySet="ChatMessage">
+                <ScalarProperty Name="reciverId" ColumnName="reciverId" />
+                <ScalarProperty Name="currentMessage" ColumnName="currentMessage" />
+                <ScalarProperty Name="messageId" ColumnName="messageId" />
+                <ScalarProperty Name="senderId" ColumnName="senderId" />
+                <ScalarProperty Name="messageTime" ColumnName="messageTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HelpStatus1">
+            <EntityTypeMapping TypeName="UmutTanesiModel.HelpStatus">
+              <MappingFragment StoreEntitySet="HelpStatus">
+                <ScalarProperty Name="helpId" ColumnName="helpId" />
+                <ScalarProperty Name="helpStatus" ColumnName="helpStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="UmutTanesiModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
+                <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+                <ScalarProperty Name="helpId" ColumnName="helpId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="personCount" ColumnName="personCount" />
+                <ScalarProperty Name="moneyStatus" ColumnName="moneyStatus" />
+                <ScalarProperty Name="ibanStatus" ColumnName="ibanStatus" />
+                <ScalarProperty Name="mobileStatus" ColumnName="mobileStatus" />
+                <ScalarProperty Name="beginDate" ColumnName="beginDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestTypes">
+            <EntityTypeMapping TypeName="UmutTanesiModel.RequestType">
+              <MappingFragment StoreEntitySet="RequestType">
+                <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+                <ScalarProperty Name="reqType" ColumnName="reqType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users1">
+            <EntityTypeMapping TypeName="UmutTanesiModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="userSurname" ColumnName="userSurname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="iban" ColumnName="iban" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="birthdate" ColumnName="birthdate" />
+                <ScalarProperty Name="userPassword" ColumnName="userPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_match" FunctionName="UmutTanesiModel.Store.sp_match">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="UmutTanesiModel.sp_match_Result">
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
+                <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+                <ScalarProperty Name="helpId" ColumnName="helpId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="personCount" ColumnName="personCount" />
+                <ScalarProperty Name="moneyStatus" ColumnName="moneyStatus" />
+                <ScalarProperty Name="ibanStatus" ColumnName="ibanStatus" />
+                <ScalarProperty Name="mobileStatus" ColumnName="mobileStatus" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="beginDate" ColumnName="beginDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_message" FunctionName="UmutTanesiModel.Store.sp_message" />
+          <FunctionImportMapping FunctionImportName="sp_chatters" FunctionName="UmutTanesiModel.Store.sp_chatters" />
+          <FunctionImportMapping FunctionImportName="sp_getChat" FunctionName="UmutTanesiModel.Store.sp_getChat">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="UmutTanesiModel.sp_getChat_Result">
+                <ScalarProperty Name="messageId" ColumnName="messageId" />
+                <ScalarProperty Name="senderId" ColumnName="senderId" />
+                <ScalarProperty Name="reciverId" ColumnName="reciverId" />
+                <ScalarProperty Name="currentMessage" ColumnName="currentMessage" />
+                <ScalarProperty Name="messageTime" ColumnName="messageTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_deleteChat" FunctionName="UmutTanesiModel.Store.sp_deleteChat" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

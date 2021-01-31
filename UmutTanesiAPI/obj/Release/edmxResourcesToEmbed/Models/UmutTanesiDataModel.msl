@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="UmutTanesiModelStoreContainer" CdmEntityContainer="UmutTanesiEntities">
+    <EntitySetMapping Name="ChatMessages">
+      <EntityTypeMapping TypeName="UmutTanesiModel.ChatMessage">
+        <MappingFragment StoreEntitySet="ChatMessage">
+          <ScalarProperty Name="reciverId" ColumnName="reciverId" />
+          <ScalarProperty Name="currentMessage" ColumnName="currentMessage" />
+          <ScalarProperty Name="messageId" ColumnName="messageId" />
+          <ScalarProperty Name="senderId" ColumnName="senderId" />
+          <ScalarProperty Name="messageTime" ColumnName="messageTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HelpStatus1">
+      <EntityTypeMapping TypeName="UmutTanesiModel.HelpStatus">
+        <MappingFragment StoreEntitySet="HelpStatus">
+          <ScalarProperty Name="helpId" ColumnName="helpId" />
+          <ScalarProperty Name="helpStatus" ColumnName="helpStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requests">
+      <EntityTypeMapping TypeName="UmutTanesiModel.Request">
+        <MappingFragment StoreEntitySet="Requests">
+          <ScalarProperty Name="requestId" ColumnName="requestId" />
+          <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+          <ScalarProperty Name="helpId" ColumnName="helpId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="personCount" ColumnName="personCount" />
+          <ScalarProperty Name="moneyStatus" ColumnName="moneyStatus" />
+          <ScalarProperty Name="ibanStatus" ColumnName="ibanStatus" />
+          <ScalarProperty Name="mobileStatus" ColumnName="mobileStatus" />
+          <ScalarProperty Name="beginDate" ColumnName="beginDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequestTypes">
+      <EntityTypeMapping TypeName="UmutTanesiModel.RequestType">
+        <MappingFragment StoreEntitySet="RequestType">
+          <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+          <ScalarProperty Name="reqType" ColumnName="reqType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users1">
+      <EntityTypeMapping TypeName="UmutTanesiModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="userSurname" ColumnName="userSurname" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="iban" ColumnName="iban" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="birthdate" ColumnName="birthdate" />
+          <ScalarProperty Name="userPassword" ColumnName="userPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_match" FunctionName="UmutTanesiModel.Store.sp_match">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="UmutTanesiModel.sp_match_Result">
+          <ScalarProperty Name="requestId" ColumnName="requestId" />
+          <ScalarProperty Name="reqTypeId" ColumnName="reqTypeId" />
+          <ScalarProperty Name="helpId" ColumnName="helpId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="personCount" ColumnName="personCount" />
+          <ScalarProperty Name="moneyStatus" ColumnName="moneyStatus" />
+          <ScalarProperty Name="ibanStatus" ColumnName="ibanStatus" />
+          <ScalarProperty Name="mobileStatus" ColumnName="mobileStatus" />
+          <ScalarProperty Name="latitude" ColumnName="latitude" />
+          <ScalarProperty Name="longitude" ColumnName="longitude" />
+          <ScalarProperty Name="beginDate" ColumnName="beginDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_message" FunctionName="UmutTanesiModel.Store.sp_message" />
+    <FunctionImportMapping FunctionImportName="sp_chatters" FunctionName="UmutTanesiModel.Store.sp_chatters" />
+    <FunctionImportMapping FunctionImportName="sp_getChat" FunctionName="UmutTanesiModel.Store.sp_getChat">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="UmutTanesiModel.sp_getChat_Result">
+          <ScalarProperty Name="messageId" ColumnName="messageId" />
+          <ScalarProperty Name="senderId" ColumnName="senderId" />
+          <ScalarProperty Name="reciverId" ColumnName="reciverId" />
+          <ScalarProperty Name="currentMessage" ColumnName="currentMessage" />
+          <ScalarProperty Name="messageTime" ColumnName="messageTime" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_deleteChat" FunctionName="UmutTanesiModel.Store.sp_deleteChat" />
+  </EntityContainerMapping>
+</Mapping>
