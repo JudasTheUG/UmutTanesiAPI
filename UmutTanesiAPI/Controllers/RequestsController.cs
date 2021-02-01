@@ -120,56 +120,113 @@ namespace UmutTanesiAPI.Controllers
             {
                 foreach (var item in db.Requests)
                 {
-                    if (item.userId!=member.userId && item.reqTypeId==member.reqTypeId && 
-                        item.helpId!=member.helpId && item.personCount>=member.personCount &&
-                        item.beginDate<=member.beginDate && item.endDate>=member.endDate)
+                    if (member.helpId == 1)
                     {
-                        if (member.helpId == 2 && member.moneyStatus == true && item.moneyStatus == true)
+                        if (item.userId != member.userId && item.reqTypeId == member.reqTypeId &&
+    item.helpId != member.helpId && item.personCount <= member.personCount &&
+    item.beginDate >= member.beginDate && item.endDate <= member.endDate)
                         {
-                            matchRequest req = new matchRequest();
-                            User user = new User();
-                            user = getUserInfo(item.userId);
+                            if (member.helpId == 2 && member.moneyStatus == true && item.moneyStatus == true)
+                            {
+                                matchRequest req = new matchRequest();
+                                User user = new User();
+                                user = getUserInfo(item.userId);
 
-                            req.requestId = item.requestId;
-                            req.reqTypeId = item.reqTypeId;
-                            req.reqType = reqTypeFinder(item.reqTypeId);
-                            req.helpId = item.helpId;
-                            req.userId = item.userId;
-                            req.userName = user.userName;
-                            req.userSurname = user.userSurname;
-                            req.personCount = item.personCount;
-                            req.moneyStatus = item.moneyStatus;
-                            req.ibanStatus = item.ibanStatus;
-                            req.mobileStatus = item.mobileStatus;
-                            req.beginDate = item.beginDate;
-                            req.endDate = item.endDate;
+                                req.requestId = item.requestId;
+                                req.reqTypeId = item.reqTypeId;
+                                req.reqType = reqTypeFinder(item.reqTypeId);
+                                req.helpId = item.helpId;
+                                req.userId = item.userId;
+                                req.userName = user.userName;
+                                req.userSurname = user.userSurname;
+                                req.personCount = item.personCount;
+                                req.moneyStatus = item.moneyStatus;
+                                req.ibanStatus = item.ibanStatus;
+                                req.mobileStatus = item.mobileStatus;
+                                req.beginDate = item.beginDate;
+                                req.endDate = item.endDate;
 
-                            matchRequestList.Add(req);
-                        }
-                        else if (member.helpId == 2 && member.moneyStatus==true && item.moneyStatus==false)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            matchRequest req = new matchRequest();
+                                matchRequestList.Add(req);
+                            }
+                            else if (member.helpId == 2 && member.moneyStatus == true && item.moneyStatus == false)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                matchRequest req = new matchRequest();
 
-                            req.requestId = item.requestId;
-                            req.reqTypeId = item.reqTypeId;
-                            req.reqType = reqTypeFinder(item.reqTypeId);
-                            req.helpId = item.helpId;
-                            req.userId = item.userId;
-                            req.personCount = item.personCount;
-                            req.moneyStatus = item.moneyStatus;
-                            req.ibanStatus = item.ibanStatus;
-                            req.mobileStatus = item.mobileStatus;
-                            req.beginDate = item.beginDate;
-                            req.endDate = item.endDate;
+                                req.requestId = item.requestId;
+                                req.reqTypeId = item.reqTypeId;
+                                req.reqType = reqTypeFinder(item.reqTypeId);
+                                req.helpId = item.helpId;
+                                req.userId = item.userId;
+                                req.personCount = item.personCount;
+                                req.moneyStatus = item.moneyStatus;
+                                req.ibanStatus = item.ibanStatus;
+                                req.mobileStatus = item.mobileStatus;
+                                req.beginDate = item.beginDate;
+                                req.endDate = item.endDate;
 
-                            matchRequestList.Add(req);
+                                matchRequestList.Add(req);
 
+                            }
                         }
                     }
+                    else
+                    {
+                        if (item.userId != member.userId && item.reqTypeId == member.reqTypeId &&
+    item.helpId != member.helpId && item.personCount >= member.personCount &&
+    item.beginDate <= member.beginDate && item.endDate >= member.endDate)
+                        {
+                            if (member.helpId == 2 && member.moneyStatus == true && item.moneyStatus == true)
+                            {
+                                matchRequest req = new matchRequest();
+                                User user = new User();
+                                user = getUserInfo(item.userId);
+
+                                req.requestId = item.requestId;
+                                req.reqTypeId = item.reqTypeId;
+                                req.reqType = reqTypeFinder(item.reqTypeId);
+                                req.helpId = item.helpId;
+                                req.userId = item.userId;
+                                req.userName = user.userName;
+                                req.userSurname = user.userSurname;
+                                req.personCount = item.personCount;
+                                req.moneyStatus = item.moneyStatus;
+                                req.ibanStatus = item.ibanStatus;
+                                req.mobileStatus = item.mobileStatus;
+                                req.beginDate = item.beginDate;
+                                req.endDate = item.endDate;
+
+                                matchRequestList.Add(req);
+                            }
+                            else if (member.helpId == 2 && member.moneyStatus == true && item.moneyStatus == false)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                matchRequest req = new matchRequest();
+
+                                req.requestId = item.requestId;
+                                req.reqTypeId = item.reqTypeId;
+                                req.reqType = reqTypeFinder(item.reqTypeId);
+                                req.helpId = item.helpId;
+                                req.userId = item.userId;
+                                req.personCount = item.personCount;
+                                req.moneyStatus = item.moneyStatus;
+                                req.ibanStatus = item.ibanStatus;
+                                req.mobileStatus = item.mobileStatus;
+                                req.beginDate = item.beginDate;
+                                req.endDate = item.endDate;
+
+                                matchRequestList.Add(req);
+
+                            }
+                        }
+                    }
+
                 }
             }
 
